@@ -6,17 +6,27 @@ class Node:
     def __str__(self):
         return str(self.data)
 
+
 class List:
     def __init__(self):
         self.first = None
 
-    def isEmpty(self):
+    def __len__(self):
+        return self.count()
+
+    def __getitem__(self, key):
+        if type(key) is int:
+            return self.get_at(key)
+        else:
+            raise Exception("Invalid key!")
+
+    def is_empty(self):
         if self.first is None:
             return True
         return False
 
     def append(self, data):
-        if self.isEmpty():
+        if self.is_empty():
             self.first = Node(data)
         else:
             currentNode = self.first
@@ -25,15 +35,15 @@ class List:
             currentNode.nextNode = Node(data)
 
     def prepend(self, data):
-        if self.isEmpty():
+        if self.is_empty():
             self.append(data)
         else:
             temp = self.first
             self.first = Node(data)
             self.first.nextNode = temp
 
-    def removeFirst(self):
-        if self.isEmpty():
+    def remove_first(self):
+        if self.is_empty():
             print("No Items in the List")
         if self.first.nextNode is None:
             self.first = None
@@ -42,8 +52,8 @@ class List:
             self.first = None
             self.first = newFirstNode
 
-    def removeLast(self):
-        if self.isEmpty():
+    def remove_last(self):
+        if self.is_empty():
             print("No Items in the List")
         elif self.first.nextNode is None:
             self.first = None
@@ -51,23 +61,39 @@ class List:
             lastNode = self.first
             while lastNode.nextNode.nextNode is not None:
                 lastNode = lastNode.nextNode
-            lastNode.nextNode = None         
+            lastNode.nextNode = None
 
-    def deleteAt(self, index):
-        if self.isEmpty():
-            return "Empty list"
+    def delete_at(self, index):
+        if self.is_empty():
+            print("Empty list")
+            return False
         if index > self.count()-1 or index < 0:
-            return "Error index invalid."
-        else:
-            currentNode = self.first
-            size = self.count()
-            for i in range(size):
-                if i == index:
-                    print(currentNode)
-                currentNode = currentNode.nextNode
+            print("Error index invalid.")
+            return False
+        if index == 0:
+            self.remove_first()
+        currentNode = self.first
+        for i in range(index):
+            if i == index-1:
+                temp = currentNode.nextNode.nextNode
+                currentNode.nextNode = None
+                currentNode.nextNode = temp
+                break
+            currentNode = currentNode.nextNode
 
-    def getAt(self, index):
-        if self.isEmpty():
+    def clear_list(self):
+        if self.is_empty():
+            return "Empty list"
+        currentNode = self.first
+        while self.first.nextNode is not None:
+            currentNode = self.first
+            while currentNode.nextNode.nextNode is not None:
+                currentNode = currentNode.nextNode
+            currentNode.nextNode = None
+        self.first = None
+
+    def get_at(self, index):
+        if self.is_empty():
             return "Empty list"
         if index > self.count()-1 or index < 0:
             return "Error index invalid."
@@ -79,7 +105,7 @@ class List:
                     return currentNode
                 currentNode = currentNode.nextNode
 
-    def getIndex(self, nodeData):
+    def get_index(self, nodeData):
         if not nodeData:
             return "Data is empty"
         else:
@@ -105,7 +131,7 @@ class List:
         return count
 
     def print(self):
-        if self.isEmpty():
+        if self.is_empty():
             print("No items in the list")
         elif self.first.nextNode is None:
             print(self.first)
@@ -115,10 +141,9 @@ class List:
                 print(currentNode)
                 currentNode = currentNode.nextNode
 
+
 if __name__ == '__main__':
     list = List()
-    print(list.count())
-    print("-------")
     list.append("Erster Eintrag")
     list.append("Zweiter Eintrag")
     list.append("Dritter Eintrag")
@@ -126,29 +151,3 @@ if __name__ == '__main__':
     list.append("Fünfter Eintrag")
     list.print()
     print("-------")
-    print("Count: " + str(list.count()))
-    print("-------")
-    list.prepend("Nullter Eintrag")
-    list.print()
-    print("-------")
-    print("Count: " + str(list.count()))
-    print("-------")
-    print(list.getIndex("Dritter Eintrag"))
-    print("-------")
-    print(list.getAt(5))
-    print("-------")
-    list.removeLast()
-    list.print()
-    print("-------")
-    list.removeFirst()
-    list.print()
-    print("-------")
-    list.removeFirst()
-    list.removeLast()
-    list.print()
-    print("-------")
-    list.prepend("Erster Eintrag")
-    list.append("Vierter Eintrag")
-    list.print()
-    print("-------")
-    list.deleteAt(0)
