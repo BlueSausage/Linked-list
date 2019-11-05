@@ -6,10 +6,12 @@ class Node:
     def __str__(self):
         return str(self.data)
 
-
 class List:
-    def __init__(self):
+    def __init__(self, *data):
         self.first = None
+        for item in data:
+            print(item)
+            self.append(item)
 
     def __len__(self):
         return self.count()
@@ -66,10 +68,8 @@ class List:
     def delete_at(self, index):
         if self.is_empty():
             print("Empty list")
-            return False
         if index > self.count()-1 or index < 0:
             print("Error index invalid.")
-            return False
         if index == 0:
             self.remove_first()
         currentNode = self.first
@@ -109,7 +109,7 @@ class List:
         if not nodeData:
             return "Data is empty"
         else:
-            if self.first is not None:
+            if not self.is_empty():
                 index = 0
                 currentNode = self.first
                 while currentNode is not None:
@@ -117,7 +117,7 @@ class List:
                         return index
                     index += 1
                     currentNode = currentNode.nextNode
-                return -1
+                return str(nodeData) + " not found"
             else:
                 return "List is empty"
 
@@ -133,8 +133,6 @@ class List:
     def print(self):
         if self.is_empty():
             print("No items in the list")
-        elif self.first.nextNode is None:
-            print(self.first)
         else:
             currentNode = self.first
             while currentNode is not None:
@@ -143,11 +141,6 @@ class List:
 
 
 if __name__ == '__main__':
-    list = List()
-    list.append("Erster Eintrag")
-    list.append("Zweiter Eintrag")
-    list.append("Dritter Eintrag")
-    list.append("Vierter Eintrag")
-    list.append("Fünfter Eintrag")
-    list.print()
-    print("-------")
+    list1 = List()
+    print("---------")
+    list2 = List("foo", 2, True, "bar", 10, False, 123)
